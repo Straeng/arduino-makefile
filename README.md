@@ -28,3 +28,8 @@ The makefile expects the project to be on the form described below.
 - LIB_NAMES: List of libraries used (for example: m core)
 - ARDUINO_DIR: Path to arduino installation root dir
 - ARDUINO_LIBS: List of arduino "libs" used in the project (for example: LiquidCrystal)
+
+### Optimizations
+The makefile uses optimizations when compiling the code to make it as small as possible. Details about the different flags can be read here:
+- https://gcc.gnu.org/onlinedocs/gcc/AVR-Options.html
+- https://gcc.gnu.org/onlinedocs/gcc/Option-Summary.html
