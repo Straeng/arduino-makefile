@@ -3,7 +3,7 @@
 
 # Name & folders
 PROGNAME	= MyProgram
-CONFIG_FILE = src/myconfig.h
+CONFIG_FILE 	= src/myconfig.h
 
 # Target configuration
 TARGET 		= atmega328p
@@ -25,8 +25,8 @@ ARDUINO_LIBS=LiquidCrystal SoftwareSerial
 
 # ---- Toolchain --------------------------------------------------------------
 
-CC 		    = avr-gcc
-CPP			= avr-g++
+CC 		= avr-gcc
+CPP		= avr-g++
 OBJCPY 		= avr-objcopy
 SIZE		= avr-size
 
@@ -48,7 +48,7 @@ CORE_DIR	:= $(ARDUINO_DIR)hardware/arduino/cores/arduino
 VARIANT_DIR	:= $(ARDUINO_DIR)hardware/arduino/variants/standard
 
 # Object files and include paths
-SOURCE_DIRS := $(shell find src/ -type d) $(foreach DIR, $(ARDUINO_LIBS), $(ARDUINO_DIR)libraries/$(DIR))
+SOURCE_DIRS 	:= $(shell find src/ -type d) $(foreach DIR, $(ARDUINO_LIBS), $(ARDUINO_DIR)libraries/$(DIR))
 SRCS		:= $(foreach DIR, $(SOURCE_DIRS), $(shell find $(DIR) -iname "*.c" -o -iname "*.cpp"))
 OBJS 		:= $(patsubst %.cpp, $(OBJDIR)/%.o, $(patsubst %.c, $(OBJDIR)/%.o, $(notdir $(SRCS))))
 INCS		:= $(foreach DIR, $(SOURCE_DIRS), -I$(DIR)) -I$(CORE_DIR) -I$(VARIANT_DIR)
@@ -57,7 +57,7 @@ INCS		:= $(foreach DIR, $(SOURCE_DIRS), -I$(DIR)) -I$(CORE_DIR) -I$(VARIANT_DIR)
 VPATH 		:= $(SOURCE_DIRS)
 
 # Library paths
-LDPATHS     := $(foreach L, $(LIB_DIRS), -L$(L)) $(foreach n, $(LIB_NAMES), -l$(n))
+LDPATHS     	:= $(foreach L, $(LIB_DIRS), -L$(L)) $(foreach n, $(LIB_NAMES), -l$(n))
 
 
 
