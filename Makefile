@@ -3,7 +3,7 @@
 
 # Name & folders
 PROGNAME	= MyProgram
-CONFIG_FILE 	= src/myconfig.h
+CONFIG_FILE = src/myconfig.h
 
 # Target configuration
 TARGET 		= atmega328p
@@ -25,8 +25,8 @@ ARDUINO_LIBS=LiquidCrystal SoftwareSerial
 
 # ---- Toolchain --------------------------------------------------------------
 
-CC 		= avr-gcc
-CPP		= avr-g++
+CC 			= avr-gcc
+CPP			= avr-g++
 OBJCPY 		= avr-objcopy
 SIZE		= avr-size
 
@@ -57,11 +57,12 @@ INCS		:= $(foreach DIR, $(SOURCE_DIRS), -I$(DIR)) -I$(CORE_DIR) -I$(VARIANT_DIR)
 VPATH 		:= $(SOURCE_DIRS)
 
 # Library paths
-LDPATHS     	:= $(foreach L, $(LIB_DIRS), -L$(L)) $(foreach n, $(LIB_NAMES), -l$(n))
+LDPATHS     := $(foreach L, $(LIB_DIRS), -L$(L)) $(foreach n, $(LIB_NAMES), -l$(n))
 
 
 
 # ---- Compiler & linker flags ------------------------------------------------
+
 CXXFLAGS 	:= $(COMP_OPT) $(FLAGS) -mmcu=$(TARGET) -DF_CPU=$(CPU_FREQ) $(INCS) -imacros $(CONFIG_FILE)
 CFLAGS		:= $(CXXFLAGS) -std=c99
 CPPFLAGS	:= $(CXXFLAGS) -fpermissive
