@@ -30,19 +30,10 @@ CPP			= avr-g++
 OBJCPY 		= avr-objcopy
 SIZE		= avr-size
 
-# Compiler config
-CXXFLAGS 		 = -DF_CPU=$(CPU_FREQ) -mmcu=$(TARGET) $(INCS) -I$(CORE_DIR) -I$(VARIANT_DIR) -imacros $(CONFIG_FILE)
-CXXFLAGS		+= -Wall -fno-exceptions -ffunction-sections -fdata-sections -funsigned-char #-pedantic 
-CXXFLAGS		+= -funsigned-bitfields -fpack-struct -fshort-enums 
-
-CFLAGS 			 = $(CXXFLAGS) -std=c99
-CPPFLAGS 		 = $(CXXFLAGS) -fpermissive
-
-LDFLAGS			 = -mmcu=$(TARGET)
-
-# Optimizations
-CXXFLAGS	   	+= -Os -mcall-prologues 
-LDFLAGS			+= -Os -Wl,--gc-sections,--relax
+COMP_OPT	= -Os -mcall-prologues
+LINK_OPT	= -Os -Wl,--gc-sections,--relax
+FLAGS		= -Wall -fno-exceptions -ffunction-sections -fdata-sections -funsigned-char #-pedantic
+FLAGS		+= -funsigned-bitfields -fpack-struct -fshort-enums
 
 
 
@@ -54,20 +45,28 @@ DISTDIR		= dist
 
 # Arduino paths
 CORE_DIR	:= $(ARDUINO_DIR)hardware/arduino/cores/arduino
-INC_DIR		:= $(ARDUINO_DIR)hardware/tools/avr/lib/avr/include/
 VARIANT_DIR	:= $(ARDUINO_DIR)hardware/arduino/variants/standard
 
 # Object files and include paths
 SOURCE_DIRS := $(shell find src/ -type d) $(foreach DIR, $(ARDUINO_LIBS), $(ARDUINO_DIR)libraries/$(DIR))
 SRCS		:= $(foreach DIR, $(SOURCE_DIRS), $(shell find $(DIR) -iname "*.c" -o -iname "*.cpp"))
 OBJS 		:= $(patsubst %.cpp, $(OBJDIR)/%.o, $(patsubst %.c, $(OBJDIR)/%.o, $(notdir $(SRCS))))
-INCS		:= $(foreach DIR, $(SOURCE_DIRS), -I$(DIR))
+INCS		:= $(foreach DIR, $(SOURCE_DIRS), -I$(DIR)) -I$(CORE_DIR) -I$(VARIANT_DIR)
 
 # Source search paths
 VPATH 		:= $(SOURCE_DIRS)
 
 # Library paths
 LDPATHS     := $(foreach L, $(LIB_DIRS), -L$(L)) $(foreach n, $(LIB_NAMES), -l$(n))
+
+
+
+# ---- Compiler & linker flags ------------------------------------------------
+CXXFLAGS 	:= $(COMP_OPT) $(FLAGS) -mmcu=$(TARGET) -DF_CPU=$(CPU_FREQ) $(INCS) -imacros $(CONFIG_FILE)
+CFLAGS		:= $(CXXFLAGS) -std=c99
+CPPFLAGS	:= $(CXXFLAGS) -fpermissive
+LDFLAGS		:= $(LINK_OPT) -mmcu=$(TARGET)
+
 
 
 # ---- Targets & rules --------------------------------------------------------
@@ -106,4 +105,5 @@ $(OBJDIR)/%.o: %.c
 makedirs:
 	@mkdir -p $(OBJDIR)
 	@mkdir -p $(DISTDIR)
+
 
